@@ -37,7 +37,7 @@ from source when the kernel is upgraded (for example using your package manager)
     * for normal Linux systems
 
     ```shell
-    sudo apt-get install git linux-headers-generic build-essential dkms
+    sudo xbps-install git linux-headers base-devel dkms
     ```
 
     * for Raspberry Pi
@@ -97,8 +97,9 @@ that it can used to rebuild the module on kernel upgrades.
     ```
 
 7. Force RTL8192EU Driver to be active from boot.
+		make sure ```/etc/modules-load.d``` directory exists
     ```shell
-    echo -e "8192eu\n\nloop" | sudo tee /etc/modules
+    printf "8192eu\n\nloop\n" | sudo tee /etc/modules-load.d/rtl8192eu.conf
     ```
 
 8. Newer versions of Ubuntu has weird plugging/replugging issue (Check #94). This includes weird idling issues, To fix this:
@@ -110,13 +111,13 @@ that it can used to rebuild the module on kernel upgrades.
 9. Update changes to Grub & initramfs
 
     ```shell
-    sudo update-grub; sudo update-initramfs -u
+    sudo update-grub; sudo dracut --force
     ```
 
 10. Reboot system to load new changes from newly generated initramfs.
 
     ```shell
-    systemctl reboot -i
+    sudo reboot
     ```
 
 11. Check that your kernel has loaded the right module:
@@ -128,8 +129,13 @@ that it can used to rebuild the module on kernel upgrades.
 You should see the line ```driver=8192eu```
     
 If you wish to uninstall the driver at a later point, use
-_sudo dkms uninstall rtl8192eu/1.0_. To completely remove the driver from DKMS use
-_sudo dkms remove rtl8192eu/1.0 --all_.
+```shell
+sudo dkms uninstall rtl8192eu/1.0
+```
+To completely remove the driver from DKMS use
+```shell
+sudo dkms remove rtl8192eu/1.0 --all
+```
 
 ## Using as AP
 
