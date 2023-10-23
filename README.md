@@ -108,19 +108,25 @@ that it can used to rebuild the module on kernel upgrades.
     echo "options 8192eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee /etc/modprobe.d/8192eu.conf
     ```
 
-9. Update changes to Grub & initramfs
+9. To enable BT co-existence:
+
+    ```shell
+    echo "options 8192eu rtw_btcoex_enable=1" | sudo tee /etc/modprobe.d/8192eu.conf
+		```
+
+10. Update changes to Grub & initramfs
 
     ```shell
     sudo update-grub; sudo dracut --force
     ```
 
-10. Reboot system to load new changes from newly generated initramfs.
+11. Reboot system to load new changes from newly generated initramfs.
 
     ```shell
     sudo reboot
     ```
 
-11. Check that your kernel has loaded the right module:
+12. Check that your kernel has loaded the right module:
  
     ```shell
     sudo lshw -c network
@@ -135,6 +141,11 @@ sudo dkms uninstall rtl8192eu/1.0
 To completely remove the driver from DKMS use
 ```shell
 sudo dkms remove rtl8192eu/1.0 --all
+```
+
+To list all options
+```shell
+modinfo 8192eu
 ```
 
 ## Using as AP
