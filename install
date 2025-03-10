@@ -1,0 +1,8 @@
+#! /bin/bash
+
+dkms uninstall rtl8192eu/1.0
+dkms remove rtl8192eu/1.0 --all
+dkms add .
+dkms install rtl8192eu/1.0
+update-grub
+dracut --force
